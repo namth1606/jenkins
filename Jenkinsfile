@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Stop image') {
             steps {
-                sshagent(['jenkins']) {
+                sshagent(credentials: ['jenkins']) {
                     sh '''
                         ssh -o StrictHostKeyChecking=no jenkins@35.209.7.50
                         sudo su
@@ -16,7 +16,7 @@ pipeline {
 
         stage('Run new image') {
             steps {
-                sshagent(['jenkins']) {
+                sshagent(credentials: ['jenkins']) {
                     sh '''
                         ssh -o StrictHostKeyChecking=no jenkins@35.209.7.50
                         sudo su
