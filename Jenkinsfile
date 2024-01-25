@@ -2,18 +2,26 @@ pipeline {
     agent any
 
     stages {
-        stage('SSH to Server') {
+        stage('Stop image') {
             steps {
                 sshagent(['jenkins']) {
-                    sh "ssh -o StrictHostKeyChecking=no jenkins@35.209.7.50 'docker stop wego-be || true && docker rm wego-be || true'" // Stop and remove any existing container
+                    sh '''
+                        ssh -o StrictHostKeyChecking=no jenkins@35.209.7.50
+                        sudo su
+                        docker stop wego-be || true && docker rm wego-be || true
+                    '''
                 }
             }
         }
 
-        stage('Run Docker Image') {
+        stage('Run new image') {
             steps {
                 sshagent(['jenkins']) {
-                    sh "ssh -o StrictHostKeyChecking=no jenkins@35.209.7.50 'docker run -d -p 8080:80 we-be:latest'" // Replace with your desired docker run command
+                    sh '''
+                        ssh -o StrictHostKeyChecking=no jenkins@35.209.7.50
+                        sudo su
+                        docker run --name wego-be -d -p 8080:80 we-be:latest'
+                    '''
                 }
             }
         }
