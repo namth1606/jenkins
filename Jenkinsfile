@@ -18,6 +18,7 @@ pipeline {
         }
       }
     }
+  }
   post {
     success {
       sh 'echo Image deployment successful!'
